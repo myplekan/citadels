@@ -1,0 +1,77 @@
+.sing-up {
+  font-family: Tahoma, Verdana, sans-serif;
+  position: relative;
+}
+
+.sing-up__container {
+  box-sizing: border-box;
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+  max-width: 360px;
+  padding: 20px 40px;
+  margin: 0 auto;
+  background-color: rgba(128, 128, 128, 0.712);
+  border-radius: 20px;
+  box-shadow: 0 0 15px rgb(128, 128, 128);
+}
+
+.sing-up__title {
+  font-size: 26px;
+  padding: 0;
+  margin: 0;
+}
+
+.sing-up__form {
+  display: flex;
+  flex-direction: column;
+  gap: 35px;
+}
+
+.sing-up__form-label {
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+}
+
+.sing-up__form input {
+  padding: 10px;
+  border-radius: 10px;
+  border: 0;
+  outline: 0;
+}
+
+.sing-up__form button {
+  padding: 10px;
+  background-color: #fff;
+  border-radius: 10px;
+  border: 0;
+  cursor: pointer;
+}
+
+.sing-in__link {
+  text-align: center;
+  color: black;
+}
+
+.sign-up__choose-avatars {
+  position: absolute;
+  top: -50px;
+  left: 0;
+  right: 0;
+  bottom: -40px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 10px;
+  padding: 50px;
+  background-color: rgba(128, 128, 128, 0.712);
+}
+
+.sign-up__choose-avatar {
+  width: 100px;
+  height: 150px;
+  border-radius: 10px;
+  cursor: pointer;
+}

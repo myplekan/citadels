@@ -1,0 +1,7 @@
+{
+  "persons": [
+    { "id": "0", "name": "Mykola", "avatar": "boy8.png", "character": { "photo": "", "moveQueue": null, "name": "", "type": "" }, "money": 0, "cards": [], "builds": [] },
+    { "id": "1", "name": "Viacheslav", "avatar": "boy10.png", "character": { "photo": "", "moveQueue": null, "name": "", "type": "" }, "money": 0, "cards": [], "builds": [] },
+    { "id": "2", "name": "Maria", "avatar": "girl1.png", "character": { "photo": "", "moveQueue": null, "name": "", "type": "" }, "money": 0, "cards": [], "builds": [] }
+  ]
+}

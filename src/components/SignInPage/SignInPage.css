@@ -1,0 +1,76 @@
+.sing-in {
+  font-family: Tahoma, Verdana, sans-serif;
+  box-sizing: border-box;
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+  max-width: 340px;
+  padding: 20px 40px;
+  margin: 0 auto;
+  background-color: rgba(128, 128, 128, 0.712);
+  border-radius: 20px;
+  box-shadow: 0 0 15px rgb(128, 128, 128);
+}
+
+.sing-in__title {
+  font-size: 26px;
+  padding: 0;
+  margin: 0;
+}
+
+.sing-in__form {
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+}
+
+.sing-in__form-label {
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+}
+
+.sing-in__form-label-checkbox {
+  display: flex;
+  justify-content: space-between;
+}
+
+.sing-in__form input {
+  padding: 10px;
+  border-radius: 10px;
+  border: 0;
+  outline: 0;
+}
+
+.sing-in__form button {
+  padding: 10px;
+  background-color: #fff;
+  border-radius: 10px;
+  border: 0;
+  cursor: pointer;
+}
+
+.sing-in__link {
+  text-align: center;
+  color: black;
+}
+
+/* .sing-in__or {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 20px;
+}
+
+.sing-in__or-line {
+  width: 100%;
+  height: 1px;
+  background-color: #fff;
+}
+
+.sing-in__google,
+.sing-in__facebook {
+  padding: 10px;
+  border-radius: 10px;
+  background-color: #fff;
+} */

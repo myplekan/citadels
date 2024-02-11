@@ -1,0 +1,126 @@
+.board {
+  position: relative;
+  height: calc(100vh - 50px);
+}
+
+.character-cards {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  display: flex;
+  gap: 10px;
+}
+
+.character-card {
+  height: 50px;
+  border-radius: 15px;
+  border: 5px solid rgb(128, 128, 128);
+}
+
+.character-card--active {
+  transform: scale(2);
+}
+
+.character-card__image {
+  width: 50px;
+  height: 50px;
+  border-radius: 10px;
+  object-fit: cover;
+}
+
+.character-card:hover {
+  transform: scale(2);
+}
+
+.players-area__container {
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr;
+  grid-template-rows: 1fr 1fr 1fr;
+  grid-template-areas:
+    "item1 item2 item3"
+    ". . ."
+    "item6 item5 item4";
+  gap: 50px;
+  height: 100%;
+}
+
+.buttons {
+  position: absolute;
+  top: 0;
+  display: flex;
+  gap: 10px;
+  padding: 10px;
+}
+
+.button {
+  padding: 5px;
+  background-color: rgba(128, 128, 128, 0);
+  outline: 0;
+  border: 1px solid rgb(128, 128, 128);
+  border-radius: 5px;
+  cursor: pointer;
+}
+
+.round-start {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  gap: 10px;
+  position: fixed;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  font-size: 50px;
+  background-color: rgba(38, 74, 85, 0.733);
+}
+
+.round-start__button {
+  padding: 5px 15px;
+  outline: 0;
+  border: 1px solid rgb(128, 128, 128);
+  border-radius: 5px;
+  cursor: pointer;
+  font-size: 30px;
+  background-color: rgba(38, 74, 85, 0.733);
+}
+
+.round-start__button:hover {
+  background-color: rgba(51, 101, 116, 0.822);
+}
+
+.round-start__choose {
+  display: flex;
+  gap: 30px;
+}
+
+.round-start__choose-item {
+  box-sizing: border-box;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 150px;
+  height: 225px;
+  background-color: rgba(38, 74, 85, 0.733);
+  border: 1px solid rgb(128, 128, 128);
+  border-radius: 5px;
+  font-size: 30px;
+  cursor: pointer;
+}
+
+.round-start__choose-item:hover {
+  background-color: rgba(51, 101, 116, 0.822);
+}
+
+.round-start__choose-img {
+  width: 100%;
+  height: 100%;
+  border-radius: 10px;
+}
+
+.round-start__choose-img:hover {
+  transform: scale(2);
+  border: 1px solid rgb(128, 128, 128);
+}

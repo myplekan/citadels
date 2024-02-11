@@ -1,0 +1,21 @@
+.header {
+  display: flex;
+  justify-content: end;
+  align-items: center;
+  height: 50px;
+  padding: 0 15px;
+}
+
+.header__sign-in {
+  padding: 5px;
+  background-color: rgba(128, 128, 128, 0);
+  outline: 0;
+  border: 1px solid rgb(128, 128, 128);
+  border-radius: 5px;
+  cursor: pointer;
+}
+
+.header__sign-in-link {
+  text-decoration: none;
+  color: black;
+}

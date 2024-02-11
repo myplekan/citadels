@@ -1,0 +1,21 @@
+{
+  "avatars": [
+    { "id": 1, "name": "Boy 1", "src": "boy1.png"},
+    { "id": 2, "name": "Boy 2", "src": "boy2.png"},
+    { "id": 3, "name": "Boy 3", "src": "boy3.png"},
+    { "id": 4, "name": "Boy 4", "src": "boy4.png"},
+    { "id": 5, "name": "Boy 5", "src": "boy5.png"},
+    { "id": 6, "name": "Boy 6", "src": "boy6.png"},
+    { "id": 7, "name": "Boy 7", "src": "boy7.png"},
+    { "id": 8, "name": "Boy 8", "src": "boy8.png"},
+    { "id": 9, "name": "Boy 9", "src": "boy9.png"},
+    { "id": 10, "name": "Boy 10", "src": "boy10.png"},
+    { "id": 11, "name": "Boy 11", "src": "boy11.png"},
+    { "id": 12, "name": "Boy 12", "src": "boy12.png"},
+    { "id": 13, "name": "Girl 1", "src": "girl1.png"},
+    { "id": 14, "name": "Girl 2", "src": "girl2.png"},
+    { "id": 15, "name": "Girl 3", "src": "girl3.png"},
+    { "id": 16, "name": "Girl 4", "src": "girl4.png"},
+    { "id": 17, "name": "Girl 5", "src": "girl5.png"}
+  ]
+}

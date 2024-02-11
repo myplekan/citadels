@@ -1,0 +1,12 @@
+{
+  "characters": [
+    { "id": "1", "name": "Assassin", "type": "none", "miniPhoto": "assassin.png", "bigPhoto": "bigAssassin.png", "moveQueue": 1},
+    { "id": "2", "name": "Thief", "type": "none", "miniPhoto": "thief.png", "bigPhoto": "bigThief.png", "moveQueue": 2},
+    { "id": "3", "name": "Magician", "type": "none", "miniPhoto": "magician.png", "bigPhoto": "bigMagician.png", "moveQueue": 3},
+    { "id": "4", "name": "King", "type": "aristocratic", "miniPhoto": "king.png", "bigPhoto": "bigKing.png", "moveQueue": 4},
+    { "id": "5", "name": "Bishop", "type": "church", "miniPhoto": "bishop.png", "bigPhoto": "bigBishop.png", "moveQueue": 5},
+    { "id": "6", "name": "Comerciante", "type": "trade", "miniPhoto": "comerciante.png", "bigPhoto": "bigComerciante.png", "moveQueue": 6},
+    { "id": "7", "name": "Architect", "type": "none", "miniPhoto": "architect.png", "bigPhoto": "bigArchitect.png", "moveQueue": 7},
+    { "id": "8", "name": "Warlord", "type": "military", "miniPhoto": "warlord.png", "bigPhoto": "bigWarlord.png", "moveQueue": 8}
+  ]
+}

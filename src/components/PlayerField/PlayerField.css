@@ -1,0 +1,158 @@
+.player-field {
+  display: flex;
+  align-items: center;
+  justify-content: space-around;
+  padding: 15px;
+  gap: 20px;
+  border: 5px solid rgba(128, 128, 128, 0.418);
+}
+
+.player-field__blocks,
+.player-field__cards {
+  display: flex;
+  gap: 15px;
+  text-align: center;
+}
+
+.player-field__block,
+.player-field__card {
+  box-sizing: border-box;
+  width: 100px;
+  height: 150px;
+  border: 1px solid rgb(128, 128, 128);
+  border-radius: 10px;
+  background-color: rgba(128, 128, 128, 0.418);
+}
+
+.player-field__block-image,
+.player-field__card-image {
+  width: 100%;
+  height: 100%;
+  border: 1px solid rgb(128, 128, 128);
+  border-radius: 10px;
+  background-color: rgba(128, 128, 128, 0.418);
+}
+
+.player-field__block-image:hover,
+.player-field__card-image:hover {
+  transform: scale(2);
+}
+
+.player-field__coins {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.player-field__coin {
+  height: 40px;
+  width: 40px;
+  background-image: url(../../../public/images/coin.png);
+  background-repeat: no-repeat;
+  background-size: cover;
+}
+
+.player-field__button {
+  padding: 5px;
+  background-color: rgba(128, 128, 128, 0);
+  outline: 0;
+  border: 1px solid rgb(128, 128, 128);
+  border-radius: 5px;
+  cursor: pointer;
+}
+
+.player-field__button:hover {
+  background-color: rgb(128, 128, 128);
+}
+
+.player-field__person {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  font-family: Tahoma, Verdana, sans-serif;
+}
+
+.player-field__person-image {
+  box-sizing: border-box;
+  width: 100px;
+  height: 150px;
+  border: 1px solid rgb(128, 128, 128);
+  border-radius: 10px;
+  background-color: rgba(128, 128, 128, 0.418);
+}
+
+.player-field__person-image:hover {
+  transform: scale(2);
+}
+
+.player-field__right {
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+}
+
+.player-field__assassin,
+.player-field__thief,
+.player-field__warlord {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  gap: 10px;
+  position: fixed;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  font-size: 50px;
+  background-color: rgba(38, 74, 85, 0.733);
+}
+
+.player-field__assassin-enemies,
+.player-field__warlord-enemies,
+.player-field__thief-enemies {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 15px;
+}
+
+.player-field__assassin-enemy,
+.player-field__warlord-enemy,
+.player-field__thief-enemy {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+  gap: 50px;
+}
+
+.player-field__assassin-enemy-img,
+.player-field__warlord-enemy-img,
+.player-field__thief-enemy-img {
+  width: 150px;
+  height: 150px;
+  border: 1px solid rgb(128, 128, 128);
+  border-radius: 5px;
+  object-fit: cover;
+  object-position: top;
+}
+
+.player-field__assassin__button,
+.player-field__warlord__button,
+.player-field__thief__button {
+  padding: 5px 15px;
+  outline: 0;
+  border: 1px solid rgb(128, 128, 128);
+  border-radius: 5px;
+  cursor: pointer;
+  font-size: 16px;
+  background-color: rgba(38, 74, 85, 0.733);
+}
+
+.player-field__assassin__button:hover,
+.player-field__warlord__button:hover,
+.player-field__thief__button:hover {
+  background-color: rgba(51, 101, 116, 0.822);
+}
