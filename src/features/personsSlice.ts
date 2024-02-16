@@ -14,6 +14,9 @@ const personsSlice = createSlice({
     createPerson: (state, action: PayloadAction<Person>) => {
       return [...state, action.payload]
     },
+    setCards: (state, action: PayloadAction<{cards: Card[], id: string}>) => {
+      state[+action.payload.id].cards = action.payload.cards;
+    },
     addCard: (state, action: PayloadAction<{ id: string; card: Card; }>) => {
       const { id, card } = action.payload;
 
@@ -36,6 +39,12 @@ const personsSlice = createSlice({
     },
     removeCoin: (state, action: PayloadAction<{ id: string, coin: number}>) => {
       state[+action.payload.id].money = state[+action.payload.id].money - action.payload.coin;
+    },
+    reset: (state, action: PayloadAction<{ id: string }>) => {
+      state[+action.payload.id].money = 0;
+      state[+action.payload.id].builds = [];
+      state[+action.payload.id].cards = [];
+      state[+action.payload.id].character = { photo: '', moveQueue: null, name: '', type: '' };
     }
   }
 })

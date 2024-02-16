@@ -66,6 +66,7 @@ export const SignUpPage = () => {
           <label className="sing-up__form-label" htmlFor="name">
             Name:
             <input
+              name="name"
               id="name"
               type="text"
               value={name}
@@ -77,6 +78,7 @@ export const SignUpPage = () => {
           <label className="sing-up__form-label" htmlFor="login">
             Login:
             <input
+              name="email"
               id="login"
               type="email"
               value={login}
@@ -88,6 +90,7 @@ export const SignUpPage = () => {
           <label className="sing-up__form-label" htmlFor="password">
             Password:
             <input
+              name="password"
               id="password"
               type="password"
               value={password}

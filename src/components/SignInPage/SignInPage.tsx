@@ -31,6 +31,7 @@ export const SignInPage = () => {
         <label className="sing-in__form-label" htmlFor="login">
           Login:
           <input
+            name="login"
             id="login"
             type="email"
             value={login}
@@ -42,6 +43,7 @@ export const SignInPage = () => {
         <label className="sing-in__form-label" htmlFor="password">
           Password:
           <input
+            name="password"
             id="password"
             type="password"
             value={password}
@@ -54,6 +56,7 @@ export const SignInPage = () => {
         <label className="sing-in__form-label-checkbox" htmlFor="checkbox">
           Remember me:
           <input
+            name="remember"
             id="checkbox"
             type="checkbox"
             value={isRemember}

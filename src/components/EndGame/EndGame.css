@@ -1,0 +1,16 @@
+.end-game__person {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 15px;
+  font-family: Tahoma, Verdana, sans-serif;
+}
+
+.end-game__person-image {
+  box-sizing: border-box;
+  width: 100px;
+  height: 150px;
+  border: 1px solid rgb(128, 128, 128);
+  border-radius: 10px;
+  background-color: rgba(128, 128, 128, 0.418);
+}

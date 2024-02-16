@@ -12,6 +12,8 @@ type Props = {
   getRandomCard: () => Card;
   setKilled: React.Dispatch<React.SetStateAction<string>>;
   killed: string;
+  setRobbedPerson: React.Dispatch<React.SetStateAction<string | null>>;
+  setDeck: React.Dispatch<React.SetStateAction<Card[]>>;
 };
 
 export const PlayerField: React.FC<Props> = ({
@@ -19,6 +21,8 @@ export const PlayerField: React.FC<Props> = ({
   getRandomCard,
   setKilled,
   killed,
+  setRobbedPerson,
+  setDeck,
 }) => {
   const { name, avatar, money, cards, builds, id, character } = person;
 
@@ -30,7 +34,14 @@ export const PlayerField: React.FC<Props> = ({
   const [assassin, setAssassin] = useState(false);
   const [thief, setThief] = useState(false);
   const [warlord, setWarlord] = useState(false);
+  const [magician, setMagician] = useState(false);
+  const [magicianExchangePerson, setMagicianExchangePerson] = useState(false);
+  const [magicianExchangeDeck, setMagicianExchangeDeck] = useState(false);
+  const [cardsForExchange, setCardsForExchange] = useState<Card[]>([]);
   const [warlordCrash, setWarlordCrash] = useState<Person | null>(null);
+  const [laboratory, setLaboratory] = useState<boolean>(false);
+  const [thiecesDen, setThiecesDen] = useState<boolean>(false);
+  const [exchangeCards, setExchangeCards] = useState<Card[]>([]);
 
   useEffect(() => {
     setClickedTimes(0);
@@ -50,17 +61,15 @@ export const PlayerField: React.FC<Props> = ({
     if (card.price <= money) {
       dispatch(actions.addBuilds(item));
       dispatch(actions.removeCards(item));
-      dispatch(actions.removeCoin({ id, coin: card.price }));
+      card.type === "special" &&
+      builds.some((build) => build.name === "factory")
+        ? dispatch(actions.removeCoin({ id, coin: card.price - 1 }))
+        : dispatch(actions.removeCoin({ id, coin: card.price }));
+      setClickedTimes((clickedTimes) => clickedTimes + 1);
     }
-
-    setClickedTimes((clickedTimes) => clickedTimes + 1);
   };
 
   const handleHeroPower = () => {
-    if (character.type !== "none") {
-      let countCoin = builds.filter((build) => build.type === character.type);
-      dispatch(actions.addCoin({ id: id, coin: countCoin.length }));
-    }
     charPower(character.name, id);
   };
 
@@ -72,11 +81,14 @@ export const PlayerField: React.FC<Props> = ({
       case charName === "Thief":
         setThief(true);
         break;
+      case charName === "Magician":
+        setMagician(true);
+        break;
       case charName === "King":
         // dispatch(actions.addCoin({ id, coin: 1 }));
         break;
       case charName === "Comerciante":
-        dispatch(actions.addCoin({ id, coin: 1 }));
+        // dispatch(actions.addCoin({ id, coin: 1 }));
         break;
       case charName === "Architect":
         dispatch(actions.addCard({ id, card: getRandomCard() }));
@@ -95,22 +107,10 @@ export const PlayerField: React.FC<Props> = ({
     setKilled(kill);
   };
 
-  const handleRobbedChar = (robbedName: string) => {
+  function handleRobbedChar(robbedName: string) {
     setThief(false);
-    const robbedId = [...persons].find(
-      (person) => person.character.name === robbedName
-    )?.id;
-
-    if (robbedId) {
-      dispatch(actions.addCoin({ id, coin: persons[+robbedId].money }));
-      dispatch(
-        actions.removeCoin({
-          id: persons[+robbedId].id,
-          coin: persons[+robbedId].money,
-        })
-      );
-    }
-  };
+    setRobbedPerson(robbedName);
+  }
 
   const handleDestroy = (destroyItem: Card) => {
     if (warlordCrash) {
@@ -126,24 +126,368 @@ export const PlayerField: React.FC<Props> = ({
     setWarlord(false);
   };
 
+  const handleExhangeWithPerson = (enemyId: string) => {
+    const ownCards = persons[+id].cards;
+    const enemyCards = persons[+enemyId].cards;
+
+    dispatch(actions.setCards({ cards: ownCards, id: enemyId }));
+    dispatch(actions.setCards({ cards: enemyCards, id }));
+
+    setMagicianExchangePerson(false);
+  };
+
+  const handleExhangeWithDeck = () => {
+    cardsForExchange.forEach((card) => {
+      dispatch(actions.removeCards({ id, card }));
+      dispatch(actions.addCard({ id, card: getRandomCard() }));
+    });
+    setDeck((prev) => prev.concat(cardsForExchange));
+    setMagicianExchangeDeck(false);
+    setCardsForExchange([]);
+  };
+
+  const handleBuildClick = (buildName: string) => {
+    if (buildName === "laboratory") {
+      setLaboratory(true);
+    }
+    if (buildName === "smithy") {
+      if (money >= 2) {
+        dispatch(actions.removeCoin({ id, coin: 2 }));
+        dispatch(actions.addCard({ id, card: getRandomCard() }));
+        dispatch(actions.addCard({ id, card: getRandomCard() }));
+        dispatch(actions.addCard({ id, card: getRandomCard() }));
+      }
+    }
+    if (buildName === "thieces_den") {
+      setThiecesDen(true);
+    }
+  };
+
+  const handleLaboratoryClick = (clickedCard: Card) => {
+    setLaboratory(false);
+    dispatch(actions.removeCards({ id, card: clickedCard }));
+    dispatch(actions.addCoin({ id, coin: 2 }));
+    setDeck((prev) => [...prev, clickedCard]);
+  };
+
+  const handleThiecesDen = (exchangeCard?: Card, buildIt?: string) => {
+    if (exchangeCard) {
+      exchangeCards.push(exchangeCard);
+    }
+
+    if (buildIt === "reset") {
+      setExchangeCards([]);
+    }
+
+    if (buildIt === "build") {
+      const thiecesDenCard = cards.filter(
+        (card) => card.name === "thieces_den"
+      );
+      let cardPrice = thiecesDenCard[0].price;
+      if (builds.filter((build) => build.name === "factory")) {
+        cardPrice = cardPrice - 1;
+      }
+
+      if (money + exchangeCards.length >= 6) {
+        exchangeCards.forEach((card) => {
+          dispatch(actions.removeCards({ id, card }));
+        });
+        setDeck((prev) => prev.concat(exchangeCards));
+        dispatch(actions.removeCards({ id, card: thiecesDenCard[0] }));
+        dispatch(actions.addBuilds({ id, card: thiecesDenCard[0] }));
+        dispatch(
+          actions.removeCoin({ id, coin: cardPrice - exchangeCards.length })
+        );
+        setExchangeCards([]);
+        setThiecesDen(false);
+      }
+    }
+  };
+
   return (
     <div className="player-field">
+      {thiecesDen && (
+        <div className="player-field__warlord">
+          <span>Виберіть карти якими заплатите за цю карту</span>
+
+          <div className="player-field__warlord-enemies">
+            {cards
+              .filter((card) => card.name !== "thieces_den")
+              .filter(
+                (card) =>
+                  !exchangeCards.some(
+                    (exchangeCard) => exchangeCard.id === card.id
+                  )
+              )
+              .map((item) => (
+                <div className="player-field__magician-enemy" key={item.id}>
+                  <img
+                    className="player-field__magician-img"
+                    src={`${process.env.PUBLIC_URL}/images/${item.photo}`}
+                    alt={item.name}
+                  />
+                  {item.name}
+
+                  <button
+                    className="player-field__warlord__button"
+                    onClick={() => handleThiecesDen(item)}
+                  >
+                    Вибрати
+                  </button>
+                </div>
+              ))}
+          </div>
+
+          <button
+            className="player-field__warlord__button"
+            onClick={() => handleThiecesDen(undefined, "build")}
+          >
+            Побудувати
+          </button>
+
+          <button
+            className="player-field__warlord__button"
+            onClick={() => {
+              setThiecesDen(false);
+              handleThiecesDen(undefined, "reset");
+            }}
+          >
+            Повернутись назад
+          </button>
+        </div>
+      )}
+
+      {laboratory && (
+        <div className="player-field__warlord">
+          <span>Виберіть карту яку скидаєте щоб получити 2 золота</span>
+
+          <div className="player-field__warlord-enemies">
+            {cards.map((item) => (
+              <div className="player-field__magician-enemy" key={item.id}>
+                <img
+                  className="player-field__magician-img"
+                  src={`${process.env.PUBLIC_URL}/images/${item.photo}`}
+                  alt={item.name}
+                />
+                {item.name}
+
+                <button
+                  className="player-field__warlord__button"
+                  onClick={() => handleLaboratoryClick(item)}
+                >
+                  Вибрати
+                </button>
+              </div>
+            ))}
+          </div>
+
+          <button
+            className="player-field__warlord__button"
+            onClick={() => setLaboratory(false)}
+          >
+            Закінчити обмін
+          </button>
+        </div>
+      )}
+
+      {assassin && (
+        <div className="player-field__assassin">
+          <span>Потрібно вибрати персонажа якого хочете вбити</span>
+
+          <div className="player-field__assassin-enemies">
+            {charactersData.characters.slice(1).map((char) => (
+              <div className="player-field__assassin-enemy" key={char.id}>
+                <img
+                  className="player-field__assassin-enemy-img"
+                  src={`${process.env.PUBLIC_URL}/images/characters/${char.bigPhoto}`}
+                  alt={char.name}
+                />
+
+                <button
+                  className="player-field__assassin__button"
+                  onClick={() => handleKillChar(char.name)}
+                >
+                  Вибрати
+                </button>
+              </div>
+            ))}
+          </div>
+
+          <button
+            className="player-field__assassin__button"
+            onClick={() => setAssassin(false)}
+          >
+            Відмінити
+          </button>
+        </div>
+      )}
+
+      {thief && (
+        <div className="player-field__thief">
+          <span>Потрібно вибрати персонажа</span>
+          <span>в якого хочете забрати золото</span>
+          <div className="player-field__thief-enemies">
+            {charactersData.characters
+              .slice(2)
+              .filter((item) => item.name !== killed)
+              .map((char) => (
+                <div className="player-field__thief-enemy" key={char.id}>
+                  <img
+                    className="player-field__thief-enemy-img"
+                    src={`${process.env.PUBLIC_URL}/images/characters/${char.bigPhoto}`}
+                    alt={char.name}
+                  />
+
+                  <button
+                    className="player-field__thief__button"
+                    onClick={() => handleRobbedChar(char.name)}
+                  >
+                    Вибрати
+                  </button>
+                </div>
+              ))}
+          </div>
+          <button
+            className="player-field__thief__button"
+            onClick={() => setThief(false)}
+          >
+            Відмінити
+          </button>
+        </div>
+      )}
+
+      {magician && (
+        <div className="player-field__warlord">
+          <span>Використайте тільки одну з двох властивостей:</span>
+
+          <div className="player-field__warlord-enemies">
+            <div className="player-field__warlord-enemy">
+              <div className="player-field__magician-block">
+                Обміняйте усі свої не розіграні карти кварталів, на карти
+                кварталів з руки іншого гравця.
+              </div>
+
+              <button
+                className="player-field__warlord__button"
+                onClick={() => {
+                  setMagicianExchangePerson(true);
+                  setMagician(false);
+                }}
+              >
+                Вибрати
+              </button>
+            </div>
+
+            <div className="player-field__warlord-enemy">
+              <div className="player-field__magician-block">
+                Виберіть будь-яку кількість карт з руки, вони попадуть в колоду,
+                візьміть стільки ж нових карт з Колоди кварталів
+              </div>
+
+              <button
+                className="player-field__warlord__button"
+                onClick={() => {
+                  setMagicianExchangeDeck(true);
+                  setMagician(false);
+                }}
+              >
+                Вибрати
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
+
+      {magicianExchangePerson && (
+        <div className="player-field__warlord">
+          <span>Виберіть гравця з яким обміняєтесь картами</span>
+
+          <div className="player-field__warlord-enemies">
+            {persons
+              .filter((person) => person.id !== id)
+              .map((item) => (
+                <div className="player-field__warlord-enemy" key={item.id}>
+                  <img
+                    className="player-field__warlord-enemy-img"
+                    src={`${process.env.PUBLIC_URL}/images/characters/${item.character.photo}`}
+                    alt={item.name}
+                  />
+                  {item.name}
+
+                  <button
+                    className="player-field__warlord__button"
+                    onClick={() => handleExhangeWithPerson(item.id)}
+                  >
+                    Вибрати
+                  </button>
+                </div>
+              ))}
+          </div>
+        </div>
+      )}
+
+      {magicianExchangeDeck && (
+        <div className="player-field__warlord">
+          <span>Виберіть карти які хочете обміняти</span>
+
+          <div className="player-field__warlord-enemies">
+            {persons[+id].cards
+              .filter(
+                (card) =>
+                  !cardsForExchange.map((change) => change.id).includes(card.id)
+              )
+              .map((item) => (
+                <div className="player-field__magician-enemy" key={item.id}>
+                  <img
+                    className="player-field__magician-img"
+                    src={`${process.env.PUBLIC_URL}/images/${item.photo}`}
+                    alt={item.name}
+                  />
+                  {item.name}
+
+                  <button
+                    className="player-field__warlord__button"
+                    onClick={() =>
+                      setCardsForExchange((prev) => [...prev, item])
+                    }
+                  >
+                    Вибрати
+                  </button>
+                </div>
+              ))}
+          </div>
+
+          <button
+            className="player-field__warlord__button"
+            onClick={() => handleExhangeWithDeck()}
+          >
+            Закінчити обмін
+          </button>
+        </div>
+      )}
+
       {warlord && (
         <div className="player-field__warlord">
           <span>Потрібно вибрати в кого і який квартал знищити</span>
 
           <div className="player-field__warlord-enemies">
             {warlordCrash
-              ? warlordCrash.builds.map((build) => (
-                  <div className="player-field__block" key={build.id}>
-                    <img
-                      src={`/images/${build.photo}`}
-                      className="player-field__block-image"
-                      alt={build.name}
-                      onClick={() => handleDestroy(build)}
-                    />
-                  </div>
-                ))
+              ? warlordCrash.builds
+                  .filter((build) => build.name !== "fort")
+                  .map((build) => (
+                    <div className="player-field__block" key={build.id}>
+                      <img
+                        src={`/images/${build.photo}`}
+                        className="player-field__block-image"
+                        alt={build.name}
+                        onClick={() => {
+                          if (build.price <= money) {
+                            handleDestroy(build);
+                          }
+                        }}
+                      />
+                    </div>
+                  ))
               : persons
                   .filter((person) => person.character.name !== "Bishop")
                   .filter((person) => person.character.name !== "Warlord")
@@ -175,68 +519,6 @@ export const PlayerField: React.FC<Props> = ({
         </div>
       )}
 
-      {thief && (
-        <div className="player-field__thief">
-          <span>Потрібно вибрати персонажа</span>
-          <span>в якого хочете забрати золото</span>
-          <div className="player-field__thief-enemies">
-            {charactersData.characters.slice(2).map((char) => (
-              <div className="player-field__thief-enemy" key={char.id}>
-                <img
-                  className="player-field__thief-enemy-img"
-                  src={`${process.env.PUBLIC_URL}/images/characters/${char.bigPhoto}`}
-                  alt={char.name}
-                />
-
-                <button
-                  className="player-field__thief__button"
-                  onClick={() => handleRobbedChar(char.name)}
-                >
-                  Вибрати
-                </button>
-              </div>
-            ))}
-          </div>
-          <button
-            className="player-field__thief__button"
-            onClick={() => setThief(false)}
-          >
-            Відмінити
-          </button>
-        </div>
-      )}
-
-      {assassin && (
-        <div className="player-field__assassin">
-          <span>Потрібно вибрати персонажа якого хочете вбити</span>
-
-          <div className="player-field__assassin-enemies">
-            {charactersData.characters.slice(1).map((char) => (
-              <div className="player-field__assassin-enemy" key={char.id}>
-                <img
-                  className="player-field__assassin-enem-img"
-                  src={`${process.env.PUBLIC_URL}/images/characters/${char.bigPhoto}`}
-                  alt={char.name}
-                />
-
-                <button
-                  className="player-field__assassin__button"
-                  onClick={() => handleKillChar(char.name)}
-                >
-                  Вибрати
-                </button>
-              </div>
-            ))}
-          </div>
-
-          <button
-            className="player-field__assassin__button"
-            onClick={() => setAssassin(false)}
-          >
-            Відмінити
-          </button>
-        </div>
-      )}
       <div className="player-field__person">
         <div style={{ display: "flex", gap: "15px" }}>
           <img
@@ -279,23 +561,41 @@ export const PlayerField: React.FC<Props> = ({
         {cards.length !== 0 ? (
           <div className="player-field__cards">
             {cards.map((card) => (
-              <div
-                className="player-field__card"
-                key={card.id}
-                onClick={() => {
-                  if (clickedTimes < 3 && character.name === "Architect") {
-                    handleClickOnHand(card);
-                  }
-                  if (clickedTimes < 1 && character.name !== "Architect") {
-                    handleClickOnHand(card);
-                  }
-                }}
-              >
-                <img
-                  src={`/images/${card.photo}`}
-                  className="player-field__card-image"
-                  alt={card.id}
-                />
+              <div className="player-field__block-card">
+                <div
+                  className={`player-field__card ${
+                    killed === character.name ||
+                    (!builds.some((build) => build.name === "career") &&
+                      builds.some((build) => build.name === card.name))
+                      ? "disabled"
+                      : ""
+                  }`}
+                  key={card.id}
+                  onClick={() => {
+                    if (clickedTimes < 3 && character.name === "Architect") {
+                      handleClickOnHand(card);
+                    }
+                    if (clickedTimes < 1 && character.name !== "Architect") {
+                      handleClickOnHand(card);
+                    }
+                  }}
+                >
+                  <img
+                    src={`/images/${card.photo}`}
+                    className="player-field__card-image"
+                    alt={card.id}
+                  />
+                </div>
+
+                {card.name === "thieces_den" && (
+                  <button
+                    className="player-field__block-button"
+                    onClick={() => handleBuildClick(card.name)}
+                    disabled={card.name !== "thieces_den"}
+                  >
+                    Використати
+                  </button>
+                )}
               </div>
             ))}
           </div>
@@ -305,13 +605,24 @@ export const PlayerField: React.FC<Props> = ({
 
         <div className="player-field__blocks">
           {builds.map((build) => (
-            <div className="player-field__block" key={build.id}>
-              <img
-                src={`/images/${build.photo}`}
-                className="player-field__block-image"
-                alt={build.name}
-              />
-            </div>
+            <>
+              <div className="player-field__block-card" key={build.id}>
+                <img
+                  src={`/images/${build.photo}`}
+                  className="player-field__block-image"
+                  alt={build.name}
+                />
+
+                {(build.name === "laboratory" || build.name === "smithy") && (
+                  <button
+                    className="player-field__block-button"
+                    onClick={() => handleBuildClick(build.name)}
+                  >
+                    Використати
+                  </button>
+                )}
+              </div>
+            </>
           ))}
 
           {grayElements.map((gray) => (

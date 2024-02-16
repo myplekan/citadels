@@ -11,6 +11,7 @@ import { PlayerArea } from "../PlayerArea/PlayerArea";
 import { PlayerField } from "../PlayerField/PlayerField";
 import classNames from "classnames";
 import { Person } from "../../types/Person";
+import { EndGame } from "../EndGame/EndGame";
 
 export const HomePage = React.memo(() => {
   const [chooseChar, setChooseChar] = useState(false);
@@ -21,6 +22,9 @@ export const HomePage = React.memo(() => {
   const [cardTwo, setCardTwo] = useState<Card | null>(null);
   const [startGame, setStartGame] = useState(false);
   const [deck, setDeck] = useState<Card[]>(cardsData.cards);
+  const [gameEnd, setGameEnd] = useState<boolean>(false);
+
+  const [robbedPerson, setRobbedPerson] = useState<string | null>(null);
 
   const [altValues, setAltValues] = useState<string[]>([]);
   const [king, setKing] = useState<Person | null>(null);
@@ -42,19 +46,21 @@ export const HomePage = React.memo(() => {
   });
 
   if (killed) {
-    whoNeedPick = [...persons].filter(who => who.character.name !== killed).sort((a, b) => {
-      if (a.character.moveQueue !== null && b.character.moveQueue !== null) {
-        return a.character.moveQueue - b.character.moveQueue;
-      }
+    whoNeedPick = [...persons]
+      .filter((who) => who.character.name !== killed)
+      .sort((a, b) => {
+        if (a.character.moveQueue !== null && b.character.moveQueue !== null) {
+          return a.character.moveQueue - b.character.moveQueue;
+        }
 
-      return +a.id - +b.id;
-    });
+        return +a.id - +b.id;
+      });
   }
 
   const getRandomCard = (): Card => {
     const randomNum = getRandomNumber();
     const foundCard = deck.find((item) => +item.id === randomNum);
-    console.log(foundCard?.id);
+
     if (!foundCard) {
       return getRandomCard();
     } else {
@@ -69,7 +75,7 @@ export const HomePage = React.memo(() => {
 
   const getRandomNumber = () => {
     const min = 1;
-    const max = 61;
+    const max = 68;
     let randomNum: number;
 
     while (true) {
@@ -107,7 +113,7 @@ export const HomePage = React.memo(() => {
   const handleChooseCharacter = () => {
     setChooseChar(true);
     setWhoNeedPickIndex(0);
-    setKilled('');
+    setKilled("");
     window.scrollTo({
       top: 0,
       behavior: "smooth",
@@ -134,13 +140,53 @@ export const HomePage = React.memo(() => {
     }
   };
 
-  const handleRoundMove = (type: string, person?: Person, card?: Card | null) => {
+  const handleRoundMove = (
+    type: string,
+    person?: Person,
+    card?: Card | null
+  ) => {
     // console.log(person?.character.type, person)
     // if (person?.character.type !== 'none' && person) {
     //   let countCoin = person.builds.filter(build => build.type === person.character.type);
     //   dispatch(actions.addCoin({id: person.id, coin: countCoin.length}))
     // }
     setRoundStart(false);
+
+    if (robbedPerson === person?.character.name) {
+      const ThiefPerson = [...persons].find(
+        (person) => person.character.name === "Thief"
+      );
+      if (ThiefPerson) {
+        const countMoney = persons[+person.id].money;
+
+        dispatch(actions.addCoin({ id: ThiefPerson.id, coin: countMoney }));
+        dispatch(
+          actions.removeCoin({
+            id: person.id,
+            coin: countMoney,
+          })
+        );
+      }
+      setRobbedPerson(null);
+    }
+
+    if (person && person.character.name !== killed) {
+      if (person.character.type !== "none") {
+        let countCoin = person.builds.filter(
+          (build) =>
+            build.type === person.character.type ||
+            build.name === "schoolOfMagic"
+        );
+        if (countCoin.length > 0) {
+          dispatch(actions.addCoin({ id: person.id, coin: countCoin.length }));
+        }
+      }
+    }
+
+    if (person?.character.name === "Comerciante") {
+      dispatch(actions.addCoin({ id: person.id, coin: 1 }));
+    }
+
     if (type === "coin") {
       dispatch(
         actions.addCoin({ id: whoNeedPick[whoNeedPickIndex].id, coin: 2 })
@@ -159,6 +205,46 @@ export const HomePage = React.memo(() => {
       setWhoNeedPickIndex(whoNeedPickIndex + 1);
     }
   };
+
+  const handleChooseTwoCards = () => {
+    if (
+      whoNeedPick[whoNeedPickIndex].builds.some(
+        (build) => build.name === "library"
+      )
+    ) {
+      const cardOne = getRandomCard();
+      const cardTwo = getRandomCard();
+      dispatch(
+        actions.addCard({ id: whoNeedPick[whoNeedPickIndex].id, card: cardOne })
+      );
+      dispatch(
+        actions.addCard({ id: whoNeedPick[whoNeedPickIndex].id, card: cardTwo })
+      );
+      setDeck(() => [...deck].filter((item) => item.id !== cardOne.id));
+      setDeck(() => [...deck].filter((item) => item.id !== cardTwo.id));
+
+      if (whoNeedPick.length > whoNeedPickIndex) {
+        setWhoNeedPickIndex(whoNeedPickIndex + 1);
+      }
+      setRoundStart(false);
+    } else {
+      setIsTwoCards(true);
+      setCardOne(() => getRandomCard());
+      setCardTwo(() => getRandomCard());
+    }
+  };
+
+  const handleNewGame = () => {
+    setStartGame(false);
+    setDeck(cardsData.cards);
+    setKing(persons[0]);
+    setAltValues([]);
+    persons.forEach((person) => {
+      dispatch(actions.reset({ id: person.id }));
+    });
+  };
+
+  const handleGameEnd = () => {};
 
   return (
     <>
@@ -228,6 +314,38 @@ export const HomePage = React.memo(() => {
           </button>
         </div>
 
+        <div className="buttons__mid">
+          <button
+            className="button"
+            onClick={() => handleNewGame()}
+            // disabled={whoNeedPickIndex === whoNeedPick.length || !startGame}
+          >
+            Нова гра
+          </button>
+
+          <button
+            className="button"
+            onClick={() => setGameEnd(true)}
+            // disabled={whoNeedPickIndex === whoNeedPick.length || !startGame}
+          >
+            Кінець гри
+          </button>
+        </div>
+
+        {gameEnd && (
+          <div className="end-game">
+            <div className="end-game__container">
+              {persons.map((person) => (
+                <EndGame key={person.id} person={person} king={king} />
+              ))}
+            </div>
+
+            <button className="button" onClick={() => setGameEnd(false)}>
+              Вийти на головну
+            </button>
+          </div>
+        )}
+
         {roundStart && (
           <>
             <div className="round-start">
@@ -242,7 +360,13 @@ export const HomePage = React.memo(() => {
                         className="round-start__choose-img"
                         src={`/images${cardOne?.photo}`}
                         alt="Card one"
-                        onClick={() => handleRoundMove("card", whoNeedPick[whoNeedPickIndex], cardOne)}
+                        onClick={() =>
+                          handleRoundMove(
+                            "card",
+                            whoNeedPick[whoNeedPickIndex],
+                            cardOne
+                          )
+                        }
                       />
                     </div>
                     <div className="round-start__choose-item">
@@ -250,7 +374,13 @@ export const HomePage = React.memo(() => {
                         className="round-start__choose-img"
                         src={`/images${cardTwo?.photo}`}
                         alt="Card two"
-                        onClick={() => handleRoundMove("card", whoNeedPick[whoNeedPickIndex], cardTwo)}
+                        onClick={() =>
+                          handleRoundMove(
+                            "card",
+                            whoNeedPick[whoNeedPickIndex],
+                            cardTwo
+                          )
+                        }
                       />
                     </div>
                   </>
@@ -258,18 +388,16 @@ export const HomePage = React.memo(() => {
                   <>
                     <div
                       className="round-start__choose-item"
-                      onClick={() => handleRoundMove("coin")}
+                      onClick={() =>
+                        handleRoundMove("coin", whoNeedPick[whoNeedPickIndex])
+                      }
                     >
                       2 золота
                     </div>
 
                     <div
                       className="round-start__choose-item"
-                      onClick={() => {
-                        setIsTwoCards(true);
-                        setCardOne(() => getRandomCard());
-                        setCardTwo(() => getRandomCard());
-                      }}
+                      onClick={() => handleChooseTwoCards()}
                     >
                       2 карти
                     </div>
@@ -287,6 +415,8 @@ export const HomePage = React.memo(() => {
             getRandomCard={getRandomCard}
             setKilled={setKilled}
             killed={killed}
+            setRobbedPerson={setRobbedPerson}
+            setDeck={setDeck}
           />
         ))}
       </div>
