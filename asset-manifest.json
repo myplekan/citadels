@@ -1,15 +1,15 @@
 {
   "files": {
-    "main.css": "/static/css/main.c0928970.css",
-    "main.js": "/static/js/main.7bf0df84.js",
-    "static/media/photo_bg.png": "/static/media/photo_bg.98687188cfd157e80b27.png",
-    "static/media/coin.png": "/static/media/coin.ffb211f8962f47a3653c.png",
-    "index.html": "/index.html",
-    "main.c0928970.css.map": "/static/css/main.c0928970.css.map",
-    "main.7bf0df84.js.map": "/static/js/main.7bf0df84.js.map"
+    "main.css": "/citadels/static/css/main.028184ad.css",
+    "main.js": "/citadels/static/js/main.c26053d5.js",
+    "static/media/photo_bg.png": "/citadels/static/media/photo_bg.98687188cfd157e80b27.png",
+    "static/media/coin.png": "/citadels/static/media/coin.ffb211f8962f47a3653c.png",
+    "index.html": "/citadels/index.html",
+    "main.028184ad.css.map": "/citadels/static/css/main.028184ad.css.map",
+    "main.c26053d5.js.map": "/citadels/static/js/main.c26053d5.js.map"
   },
   "entrypoints": [
-    "static/css/main.c0928970.css",
-    "static/js/main.7bf0df84.js"
+    "static/css/main.028184ad.css",
+    "static/js/main.c26053d5.js"
   ]
 }
