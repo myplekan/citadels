@@ -477,7 +477,7 @@ export const PlayerField: React.FC<Props> = ({
                   .map((build) => (
                     <div className="player-field__block" key={build.id}>
                       <img
-                        src={`/images/${build.photo}`}
+                        src={`${process.env.PUBLIC_URL}/images/${build.photo}`}
                         className="player-field__block-image"
                         alt={build.name}
                         onClick={() => {
@@ -581,7 +581,7 @@ export const PlayerField: React.FC<Props> = ({
                   }}
                 >
                   <img
-                    src={`/images/${card.photo}`}
+                    src={`${process.env.PUBLIC_URL}/images/${card.photo}`}
                     className="player-field__card-image"
                     alt={card.id}
                   />

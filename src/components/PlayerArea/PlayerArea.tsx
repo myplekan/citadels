@@ -46,20 +46,23 @@ export const PlayerArea: React.FC<Props> = ({ number, person }) => {
       </div>
 
       <div className="player-area__cards">
-        {cards.length !== 0
-          ? (
-            cards.map((card, index) => (
-              <div className="player-area__card" key={card.id} style={{ top: `${index * 5}px`}}>
-                <img
-                  src="/images/back.png"
-                  className="player-area__card-image"
-                  alt={card.name}
-                />
-              </div>
-            ))
-          ) : (
-            <div className="player-area__card-image"></div>
-          )}
+        {cards.length !== 0 ? (
+          cards.map((card, index) => (
+            <div
+              className="player-area__card"
+              key={card.id}
+              style={{ top: `${index * 5}px` }}
+            >
+              <img
+                src={`${process.env.PUBLIC_URL}/images/back.png`}
+                className="player-area__card-image"
+                alt={card.name}
+              />
+            </div>
+          ))
+        ) : (
+          <div className="player-area__card-image"></div>
+        )}
       </div>
       <div
         className={classNames("player-area__builds", {

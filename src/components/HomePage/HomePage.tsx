@@ -358,7 +358,7 @@ export const HomePage = React.memo(() => {
                     <div className="round-start__choose-item">
                       <img
                         className="round-start__choose-img"
-                        src={`/images${cardOne?.photo}`}
+                        src={`${process.env.PUBLIC_URL}/images${cardOne?.photo}`}
                         alt="Card one"
                         onClick={() =>
                           handleRoundMove(
@@ -372,7 +372,7 @@ export const HomePage = React.memo(() => {
                     <div className="round-start__choose-item">
                       <img
                         className="round-start__choose-img"
-                        src={`/images${cardTwo?.photo}`}
+                        src={`${process.env.PUBLIC_URL}/images${cardTwo?.photo}`}
                         alt="Card two"
                         onClick={() =>
                           handleRoundMove(
