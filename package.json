@@ -1,8 +1,8 @@
 {
-  "name": "citadels",
   "homepage": "https://myplekan.github.io/citadels",
+  "name": "citadels",
   "version": "0.1.0",
-  "private": false,
+  "private": true,
   "dependencies": {
     "@reduxjs/toolkit": "^2.1.0",
     "@testing-library/jest-dom": "^5.17.0",
@@ -27,6 +27,7 @@
   },
   "scripts": {
     "start": "react-scripts start",
+    "predeploy": "npm run build",
     "deploy": "gh-pages -d build",
     "build": "react-scripts build",
     "test": "react-scripts test",

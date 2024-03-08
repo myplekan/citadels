@@ -528,7 +528,7 @@ export const PlayerField: React.FC<Props> = ({
           />
           {!character.photo ? (
             <img
-              src="/images/back.png"
+              src={`${process.env.PUBLIC_URL}/images/back.png`}
               className="player-field__person-image"
               alt="Player cards"
             />
