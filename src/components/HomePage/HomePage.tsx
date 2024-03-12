@@ -5,7 +5,7 @@ import cardsData from "../../cards.json";
 import "./HomePage.css";
 import { Card } from "../../types/card";
 import { useAppDispatch, useAppSelector } from "../../hooks/hooks";
-import React, { useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import { actions } from "../../features/personsSlice";
 import { PlayerArea } from "../PlayerArea/PlayerArea";
 import { PlayerField } from "../PlayerField/PlayerField";
@@ -13,7 +13,7 @@ import classNames from "classnames";
 import { Person } from "../../types/Person";
 import { EndGame } from "../EndGame/EndGame";
 
-export const HomePage = React.memo(() => {
+export const HomePage = () => {
   const [chooseChar, setChooseChar] = useState(false);
   const [roundStart, setRoundStart] = useState(false);
   const [whoNeedPickIndex, setWhoNeedPickIndex] = useState(0);
@@ -45,6 +45,8 @@ export const HomePage = React.memo(() => {
 
     return +a.id - +b.id;
   });
+
+  const [whoMakesMove, setWhoMakesMove] = useState(whoNeedPick[0]);
 
   if (killed) {
     whoNeedPick = [...persons]
@@ -119,7 +121,7 @@ export const HomePage = React.memo(() => {
     setKilled("");
     window.scrollTo({
       top: 0,
-      behavior: "smooth",
+      behavior: "auto",
     });
     document.body.style.overflowY = "hidden";
 
@@ -194,6 +196,7 @@ export const HomePage = React.memo(() => {
       }
     }
     if (whoNeedPick.length > whoNeedPickIndex) {
+      setWhoMakesMove(whoNeedPick[whoNeedPickIndex]);
       setWhoNeedPickIndex(whoNeedPickIndex + 1);
     }
   };
@@ -303,20 +306,6 @@ export const HomePage = React.memo(() => {
           >
             Старт гри
           </button>
-          <button
-            className="button"
-            onClick={() => handleChooseCharacter()}
-            disabled={!startGame}
-          >
-            Вибір персонажів
-          </button>
-          <button
-            className="button"
-            onClick={() => setRoundStart(true)}
-            disabled={whoNeedPickIndex === whoNeedPick.length || !startGame}
-          >
-            Розпочати хід
-          </button>
         </div>
 
         <div className="buttons__mid">
@@ -421,9 +410,13 @@ export const HomePage = React.memo(() => {
             killed={killed}
             setRobbedPerson={setRobbedPerson}
             setDeck={setDeck}
+            setRoundStart={setRoundStart}
+            whoMakesMove={whoMakesMove}
+            whoNeedPick={whoNeedPick}
+            handleChooseCharacter={handleChooseCharacter}
           />
         ))}
       </div>
     </>
   );
-});
+};

@@ -14,6 +14,10 @@ type Props = {
   killed: string;
   setRobbedPerson: React.Dispatch<React.SetStateAction<string | null>>;
   setDeck: React.Dispatch<React.SetStateAction<Card[]>>;
+  setRoundStart: React.Dispatch<React.SetStateAction<boolean>>;
+  whoMakesMove: Person;
+  whoNeedPick: Person[];
+  handleChooseCharacter: () => void;
 };
 
 export const PlayerField: React.FC<Props> = ({
@@ -23,6 +27,10 @@ export const PlayerField: React.FC<Props> = ({
   killed,
   setRobbedPerson,
   setDeck,
+  setRoundStart,
+  whoMakesMove,
+  whoNeedPick,
+  handleChooseCharacter,
 }) => {
   const { name, avatar, money, cards, builds, id, character } = person;
 
@@ -199,6 +207,14 @@ export const PlayerField: React.FC<Props> = ({
         setExchangeCards([]);
         setThiecesDen(false);
       }
+    }
+  };
+
+  const handleEndRound = () => {
+    if (whoNeedPick[whoNeedPick.length - 1].id === id) {
+      handleChooseCharacter();
+    } else {
+      setRoundStart(true);
     }
   };
 
@@ -539,7 +555,43 @@ export const PlayerField: React.FC<Props> = ({
           )}
         </div>
 
-        {name}
+        <span>
+          {name}
+          {whoNeedPick[0].id === id && (
+            <svg
+            fill="#e5f047"
+            height="25px"
+            width="25px"
+            version="1.1"
+            id="Capa_1"
+            xmlns="http://www.w3.org/2000/svg"
+            xmlnsXlink="http://www.w3.org/1999/xlink"
+            viewBox="-13.2 -13.2 246.40 246.40"
+            xmlSpace="preserve"
+            stroke="#e5f047"
+            stroke-width="0.0022"
+            transform="matrix(1, 0, 0, 1, 0, 0)rotate(0)"
+          >
+            <g id="SVGRepo_bgCarrier" stroke-width="0" />
+
+            <g
+              id="SVGRepo_tracerCarrier"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+              stroke="#CCCCCC"
+              stroke-width="8.36"
+            >
+              {" "}
+              <path d="M220,98.865c0-12.728-10.355-23.083-23.083-23.083s-23.083,10.355-23.083,23.083c0,5.79,2.148,11.084,5.681,15.14 l-23.862,21.89L125.22,73.002l17.787-20.892l-32.882-38.623L77.244,52.111l16.995,19.962l-30.216,63.464l-23.527-21.544 c3.528-4.055,5.671-9.344,5.671-15.128c0-12.728-10.355-23.083-23.083-23.083C10.355,75.782,0,86.137,0,98.865 c0,11.794,8.895,21.545,20.328,22.913l7.073,84.735H192.6l7.073-84.735C211.105,120.41,220,110.659,220,98.865z" />{" "}
+            </g>
+
+            <g id="SVGRepo_iconCarrier">
+              {" "}
+              <path d="M220,98.865c0-12.728-10.355-23.083-23.083-23.083s-23.083,10.355-23.083,23.083c0,5.79,2.148,11.084,5.681,15.14 l-23.862,21.89L125.22,73.002l17.787-20.892l-32.882-38.623L77.244,52.111l16.995,19.962l-30.216,63.464l-23.527-21.544 c3.528-4.055,5.671-9.344,5.671-15.128c0-12.728-10.355-23.083-23.083-23.083C10.355,75.782,0,86.137,0,98.865 c0,11.794,8.895,21.545,20.328,22.913l7.073,84.735H192.6l7.073-84.735C211.105,120.41,220,110.659,220,98.865z" />{" "}
+            </g>
+          </svg>
+          )}
+        </span>
 
         <div className="player-field__coins">
           {money}
@@ -549,9 +601,17 @@ export const PlayerField: React.FC<Props> = ({
         <button
           className="player-field__button"
           onClick={handleHeroPower}
-          disabled={killed === character.name}
+          disabled={killed === character.name || whoMakesMove.id !== id}
         >
           Використати силу персонажа
+        </button>
+
+        <button
+          className="player-field__button"
+          onClick={handleEndRound}
+          disabled={killed === character.name || whoMakesMove.id !== id}
+        >
+          Закінчити хід
         </button>
       </div>
 

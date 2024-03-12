@@ -80,7 +80,11 @@
   cursor: pointer;
 }
 
-.player-field__button:hover {
+.player-field__button:disabled {
+  cursor: not-allowed;
+}
+
+.player-field__button:not(:disabled):hover {
   background-color: rgb(121 118 45);
   color: #fff;
 }
@@ -88,6 +92,7 @@
 .player-field__person {
   display: flex;
   flex-direction: column;
+  gap: 5px;
   align-items: center;
   font-family: Tahoma, Verdana, sans-serif;
 }
@@ -103,6 +108,7 @@
 
 .player-field__person-image:hover {
   transform: scale(2);
+  z-index: 2;
 }
 
 .player-field__right {

@@ -74,7 +74,7 @@ export const PlayerArea: React.FC<Props> = ({ number, person }) => {
           return (
             <img
               key={build.id}
-              src={`/images/${build.photo}`}
+              src={`${process.env.PUBLIC_URL}/images/${build.photo}`}
               className="player-area__card-image"
               alt={build.name}
             />
