@@ -1,15 +1,15 @@
 {
   "files": {
-    "main.css": "/citadels/static/css/main.028184ad.css",
-    "main.js": "/citadels/static/js/main.9d666c51.js",
+    "main.css": "/citadels/static/css/main.9debd950.css",
+    "main.js": "/citadels/static/js/main.35b62fbf.js",
     "static/media/photo_bg.png": "/citadels/static/media/photo_bg.98687188cfd157e80b27.png",
     "static/media/coin.png": "/citadels/static/media/coin.ffb211f8962f47a3653c.png",
     "index.html": "/citadels/index.html",
-    "main.028184ad.css.map": "/citadels/static/css/main.028184ad.css.map",
-    "main.9d666c51.js.map": "/citadels/static/js/main.9d666c51.js.map"
+    "main.9debd950.css.map": "/citadels/static/css/main.9debd950.css.map",
+    "main.35b62fbf.js.map": "/citadels/static/js/main.35b62fbf.js.map"
   },
   "entrypoints": [
-    "static/css/main.028184ad.css",
-    "static/js/main.9d666c51.js"
+    "static/css/main.9debd950.css",
+    "static/js/main.35b62fbf.js"
   ]
 }
