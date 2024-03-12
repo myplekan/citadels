@@ -7,11 +7,6 @@
 }
 
 .header__sign-in {
-  padding: 5px;
-  background-color: rgba(128, 128, 128, 0);
-  outline: 0;
-  border: 1px solid rgb(128, 128, 128);
-  border-radius: 5px;
   cursor: pointer;
 }
 

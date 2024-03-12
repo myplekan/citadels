@@ -84,8 +84,6 @@ export const ChooseCharacter: React.FC<Props> = React.memo(
       return isChoosen.some((item) => item === check);
     };
 
-    // console.log(altValues)
-
     return (
       <>
         {chooseChar && (

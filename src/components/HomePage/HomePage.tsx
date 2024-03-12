@@ -23,6 +23,7 @@ export const HomePage = React.memo(() => {
   const [startGame, setStartGame] = useState(false);
   const [deck, setDeck] = useState<Card[]>(cardsData.cards);
   const [gameEnd, setGameEnd] = useState<boolean>(false);
+  const [rules, setRules] = useState(false);
 
   const [robbedPerson, setRobbedPerson] = useState<string | null>(null);
 
@@ -108,6 +109,8 @@ export const HomePage = React.memo(() => {
         }
       }
     }
+
+    handleChooseCharacter();
   };
 
   const handleChooseCharacter = () => {
@@ -120,14 +123,6 @@ export const HomePage = React.memo(() => {
     });
     document.body.style.overflowY = "hidden";
 
-    // const containers = document.querySelectorAll<HTMLImageElement>(
-    //   ".player-area__person-image"
-    // );
-
-    // setAltValues(() =>
-    //   Array.from(containers).map((container) => container.alt)
-    // );
-
     if (king) {
       const result = [...persons]
         .slice(+king.id, persons.length)
@@ -138,6 +133,8 @@ export const HomePage = React.memo(() => {
         )
       );
     }
+
+    setRoundStart(true);
   };
 
   const handleRoundMove = (
@@ -145,11 +142,6 @@ export const HomePage = React.memo(() => {
     person?: Person,
     card?: Card | null
   ) => {
-    // console.log(person?.character.type, person)
-    // if (person?.character.type !== 'none' && person) {
-    //   let countCoin = person.builds.filter(build => build.type === person.character.type);
-    //   dispatch(actions.addCoin({id: person.id, coin: countCoin.length}))
-    // }
     setRoundStart(false);
 
     if (robbedPerson === person?.character.name) {
@@ -244,10 +236,29 @@ export const HomePage = React.memo(() => {
     });
   };
 
-  const handleGameEnd = () => {};
+  const handleViewRules = () => {
+    setRules(true);
+  };
 
   return (
     <>
+      {rules && (
+        <div className="rules">
+          <img
+            className="rules__image"
+            src={`${process.env.PUBLIC_URL}/images/rules.png`}
+            alt="Rules"
+          />
+
+          <button
+            className="player-field__assassin__button"
+            onClick={() => setRules(false)}
+          >
+            Вернутись
+          </button>
+        </div>
+      )}
+
       {chooseChar && (
         <ChooseCharacter
           setKing={setKing}
@@ -261,13 +272,7 @@ export const HomePage = React.memo(() => {
         <div className="board">
           <div className="character-cards">
             {charactersData.characters.map((character) => (
-              <div
-                key={character.id}
-                className={classNames(
-                  "character-card"
-                  // "character-card--active"
-                )}
-              >
+              <div key={character.id} className={classNames("character-card")}>
                 <img
                   src={`${process.env.PUBLIC_URL}/images/characters/${character.miniPhoto}`}
                   className={classNames("character-card__image")}
@@ -315,19 +320,18 @@ export const HomePage = React.memo(() => {
         </div>
 
         <div className="buttons__mid">
-          <button
-            className="button"
-            onClick={() => handleNewGame()}
-            // disabled={whoNeedPickIndex === whoNeedPick.length || !startGame}
-          >
+          <button className="button" onClick={() => handleNewGame()}>
             Нова гра
           </button>
 
           <button
-            className="button"
-            onClick={() => setGameEnd(true)}
-            // disabled={whoNeedPickIndex === whoNeedPick.length || !startGame}
+            className="button button-rules"
+            onClick={() => handleViewRules()}
           >
+            Правила
+          </button>
+
+          <button className="button" onClick={() => setGameEnd(true)}>
             Кінець гри
           </button>
         </div>

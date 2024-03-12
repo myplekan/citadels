@@ -85,10 +85,8 @@ export const PlayerField: React.FC<Props> = ({
         setMagician(true);
         break;
       case charName === "King":
-        // dispatch(actions.addCoin({ id, coin: 1 }));
         break;
       case charName === "Comerciante":
-        // dispatch(actions.addCoin({ id, coin: 1 }));
         break;
       case charName === "Architect":
         dispatch(actions.addCard({ id, card: getRandomCard() }));
@@ -608,7 +606,7 @@ export const PlayerField: React.FC<Props> = ({
             <>
               <div className="player-field__block-card" key={build.id}>
                 <img
-                  src={`/images/${build.photo}`}
+                  src={`${process.env.PUBLIC_URL}/images/${build.photo}`}
                   className="player-field__block-image"
                   alt={build.name}
                 />

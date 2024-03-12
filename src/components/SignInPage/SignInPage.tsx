@@ -72,16 +72,6 @@ export const SignInPage = () => {
       <Link to="/" className="sing-in__link">Forgot Password?</Link>
 
       <Link to="/sign-up" className="sing-in__link">Don`t have an account? Sign Up</Link>
-
-      {/* <div className="sing-in__or">
-        <div className="sing-in__or-line"></div>
-        Or
-        <div className="sing-in__or-line"></div>
-      </div> */}
-
-      {/* <div className="sing-in__google">Continue with Google</div>
-
-      <div className="sing-in__facebook">Continue with Facebook</div> */}
     </div>
   );
 };
