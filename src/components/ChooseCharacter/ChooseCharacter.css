@@ -45,19 +45,6 @@
   transform: scale(3);
 }
 
-.choose-char__button {
-  position: absolute;
-  bottom: 5%;
-  left: 50%;
-  transform: translateX(-50%);
-  padding: 5px;
-  background-color: rgba(128, 128, 128, 0);
-  outline: 0;
-  border: 1px solid rgb(128, 128, 128);
-  border-radius: 5px;
-  cursor: pointer;
-}
-
 .choose-char__notice {
   position: absolute;
   display: flex;
@@ -68,7 +55,8 @@
   font-size: 50px;
 }
 
-.choose-char__button-choose {
+.choose-char__button-choose,
+.choose-char__button {
   padding: 5px;
   background-color: rgb(61 61 75 / 54%);
   color: #fff;
@@ -79,12 +67,21 @@
   cursor: pointer;
 }
 
+.choose-char__button {
+  position: absolute;
+  bottom: 5%;
+  left: 50%;
+  transform: translateX(-50%);
+  padding: 15px;
+}
+
 .choose-char__button:hover,
 .choose-char__button-choose:hover:not(.disabled) {
   background-color: rgb(37 37 55);
 }
 
-.choose-char__button-choose.disabled {
+.choose-char__button-choose.disabled,
+.choose-char__button.disabled {
   opacity: 0.5;
   cursor: not-allowed;
   background-color: rgba(128, 128, 128, 0);

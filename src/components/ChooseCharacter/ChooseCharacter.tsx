@@ -7,14 +7,14 @@ import { actions } from "../../features/personsSlice";
 import { Character, Person } from "../../types/Person";
 
 type WillAddChar = {
-  id: string,
-  role: Character
+  id: string;
+  role: Character;
 };
 type Props = {
-  altValues: string[],
-  setChooseChar: React.Dispatch<React.SetStateAction<boolean>>,
-  chooseChar: boolean,
-  setKing: React.Dispatch<React.SetStateAction<Person | null>>,
+  altValues: string[];
+  setChooseChar: React.Dispatch<React.SetStateAction<boolean>>;
+  chooseChar: boolean;
+  setKing: React.Dispatch<React.SetStateAction<Person | null>>;
 };
 
 export const ChooseCharacter: React.FC<Props> = React.memo(
@@ -51,10 +51,15 @@ export const ChooseCharacter: React.FC<Props> = React.memo(
       setStartId(0);
     };
 
-    const handleCharacterClick = (charImg: string, moveQueue: number, name: string, type: string) => {
+    const handleCharacterClick = (
+      charImg: string,
+      moveQueue: number,
+      name: string,
+      type: string
+    ) => {
       const id = [...persons]
-      .filter((person) => person.name === altValues[startId])
-      .map((item) => item.id);
+        .filter((person) => person.name === altValues[startId])
+        .map((item) => item.id);
 
       setWillAddChar((char) => [
         ...char,
@@ -66,8 +71,8 @@ export const ChooseCharacter: React.FC<Props> = React.memo(
 
       setStartId(() => startId + 1);
 
-      if (name === 'King') {
-        const person = [...persons].find(person => person.id === id[0]);
+      if (name === "King") {
+        const person = [...persons].find((person) => person.id === id[0]);
         if (person) {
           setKing(person);
         }
@@ -106,7 +111,7 @@ export const ChooseCharacter: React.FC<Props> = React.memo(
 
                     <button
                       className={`choose-char__button-choose ${
-                        checkIfchoosen(character.bigPhoto) ? "disabled" : ""
+                        checkIfchoosen(character.bigPhoto) || altValues.length <= startId ? "disabled" : ""
                       }`}
                       onClick={() => {
                         setIsChoosen((items) => [...items, character.bigPhoto]);
@@ -114,7 +119,7 @@ export const ChooseCharacter: React.FC<Props> = React.memo(
                           character.bigPhoto,
                           character.moveQueue,
                           character.name,
-                          character.type,
+                          character.type
                         );
                       }}
                       disabled={
@@ -128,8 +133,11 @@ export const ChooseCharacter: React.FC<Props> = React.memo(
                 ))}
 
                 <button
-                  className="choose-char__button"
+                  className={`choose-char__button ${
+                    altValues.length > startId ? "disabled" : ""
+                  }`}
                   onClick={() => handleButtonClick()}
+                  disabled={altValues.length > startId}
                 >
                   закінчити вибір
                 </button>
